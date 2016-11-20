@@ -1,18 +1,17 @@
-import math
 from core import Size
 
-ball_size = Size(32, 32)
-ship_size = Size(190, 30)
-bonus_size = Size(25, 25)
-brick_size = Size(90, 20)
-bullet_size = Size(10, 18)
+BALL_SIZE = Size(35, 35)
+SHIP_SIZE = Size(200, 25)
+BONUS_SIZE = Size(25, 25)
+BRICK_SIZE = Size(100, 20)
+BULLET_SIZE = Size(10, 20)
 
-ball_velocity = 15
-ship_velocity = 30
-bonus_velocity = 15
-bullet_velocity = 20
+BALL_VELOCITY = 13
+SHIP_VELOCITY = 17
+BONUS_VELOCITY = 10
+BULLET_VELOCITY = 13
 
-ball_direction = -math.pi / 4
-ship_direction = 0
-bonus_direction = math.pi / 2
-bullet_direction = -math.pi / 2
+BALL_DIRECTION = (-1, 1)
+SHIP_DIRECTION = (0, 0)
+BONUS_DIRECTION = (0, 1)
+BULLET_DIRECTION = (0, -1)

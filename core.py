@@ -6,6 +6,22 @@ from enum import Enum
 Size = namedtuple('Size', ['width', 'height'])
 
 
+class Location:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __iter__(self):
+        yield self.x
+        yield self.y
+
+    def __sub__(self, other):
+        return Vector(self.x - other.x, self.y - other.y)
+
+    def __str__(self):
+        return 'x:%s, y:%s' % (self.x, self.y)
+
+
 class Frame:
     def __init__(self, x, y, width, height):
         self.x = x
@@ -34,8 +50,12 @@ class Frame:
         return self.x + self.width
 
     @property
+    def center(self):
+        return Location(self.left + self.width / 2, self.top + self.height / 2)
+
+    @property
     def location(self):
-        return self.x, self.y
+        return Location(self.x, self.y)
 
     @location.setter
     def location(self, location):
@@ -45,11 +65,11 @@ class Frame:
         return min(self.right, frame.right) >= max(self.left, frame.left) and\
             min(self.bottom, frame.bottom) >= max(self.top, frame.top)
 
-    def resize(self, d_width=0, d_height=0):
+    def resize(self, d_width, d_height):
         return Frame(self.x, self.y,
                      self.width + d_width, self.height + d_height)
 
-    def relocate(self, delta_x=0, delta_y=0):
+    def relocate(self, delta_x, delta_y):
         return Frame(self.x + delta_x, self.y + delta_y,
                      self.width, self.height)
 
@@ -59,6 +79,29 @@ class Frame:
     def __str__(self):
         return '(%s, %s), width: %s, height: %s' % (self.x, self.y, self.width,
                                                     self.height)
+
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    @classmethod
+    def create(cls, vector):
+        return cls(vector.x, vector.y)
+
+    @classmethod
+    def from_angle(cls, angle):
+        return cls(math.cos(angle), math.sin(angle))
+
+    def normalize(self):
+        length = math.sqrt(self.x * self.x + self.y * self.y)
+        self.x /= length
+        self.y /= length
+
+    @property
+    def angle(self):
+        return math.atan2(self.y, self.x)
 
 
 class BallState(Enum):

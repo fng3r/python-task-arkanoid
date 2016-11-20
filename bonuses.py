@@ -6,8 +6,8 @@ from core import BallState
 
 class Bonus(MovingEntity):
     def __init__(self, x, y):
-        super().__init__(x, y, settings.bonus_size, settings.bonus_velocity,
-                         settings.bonus_direction)
+        super().__init__(x, y, settings.BONUS_SIZE, settings.BONUS_VELOCITY,
+                         settings.BONUS_DIRECTION)
 
     def activate(self, game):
         pass
@@ -62,7 +62,7 @@ class LifeBonus(Bonus):
         super().__init__(x, y)
 
     def activate(self, game):
-        game.lives += 1
+        game.player.gain_life()
 
 
 class DeathBonus(Bonus):
@@ -70,8 +70,7 @@ class DeathBonus(Bonus):
         super().__init__(x, y)
 
     def activate(self, game):
-        game.lives -= 1
-        game.reset()
+        game.kill_player()
 
 
 BONUSES = [DecreaseBonus, ExpandBonus, BulletBonus, FireBallBonus,

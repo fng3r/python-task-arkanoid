@@ -1,6 +1,7 @@
 import unittest
 from math import pi
-from core import Frame, compare, sign
+import bonuses
+from core import Size, compare, sign
 from game import GameModel
 from entities import *
 
@@ -63,25 +64,53 @@ class LogicTest(unittest.TestCase):
         ship.velocity = 10
 
         ship.move()
-        self.assertEqual(ship.location, (20, 500))
+        self.assertEqual(tuple(ship.location), (20, 500))
 
         ship.move(0)
-        self.assertEqual(ship.location, (20, 500))
+        self.assertEqual(tuple(ship.location), (20, 500))
 
         ship.velocity = 20
         ship.move(-1)
-        self.assertEqual(ship.location, (0, 500))
+        self.assertEqual(tuple(ship.location), (0, 500))
 
     def test_ball_movement(self):
-        ship = Ship(300, 1000)
         ball = Ball(350, 970)
         ball.change_state(BallState.Free)
 
-        ball.direction = -pi / 2
+        ball.direction = Vector.from_angle(-pi / 2)
         ball.velocity = 20
 
         ball.move()
-        self.assertEqual(ball.location, (350, 950))
+        self.assertEqual(tuple(ball.location), (350, 950))
+
+    def test_death(self):
+        game = GameModel(Size(1000, 1000))
+        game.kill_player()
+
+        self.assertEqual(game.player.lives, 2)
+
+    def test_gameover(self):
+        game = GameModel(Size(1000, 1000))
+
+        for i in range(game.player.lives):
+            game.kill_player()
+
+        self.assertTrue(game.gameover)
+
+    def test_pick_life_bonus(self):
+        game = GameModel(Size(1000, 500))
+        game.bonuses.add(bonuses.LifeBonus(500, 460))
+        game.tick()
+
+        self.assertEqual(game.player.lives, 4)
+
+    def test_ship_out_of_boundaries(self):
+        game = GameModel(Size(1000, 500))
+        game.ship.relocate(900, 0)
+        game.normalize_ship_location()
+
+        self.assertEqual(tuple(game.ship.location), (800, 475))
+
 
 if __name__ == '__main__':
     unittest.main()

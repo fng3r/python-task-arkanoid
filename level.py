@@ -15,7 +15,7 @@ class LevelCreator:
         w_num = 10
         h_num = 11
         level = 1
-        width = (game_size.width - w_num * settings.brick_size.width) / 2
+        width = (game_size.width - w_num * settings.BRICK_SIZE.width) / 2
         height = 50
 
         blocks = set()
@@ -52,6 +52,6 @@ class LevelCreator:
 
     @staticmethod
     def _get_block_location(width, height, i, j):
-        block_x = width + settings.brick_size.width * j
-        block_y = height + settings.brick_size.height * i
+        block_x = width + settings.BRICK_SIZE.width * j
+        block_y = height + settings.BRICK_SIZE.height * i
         return block_x, block_y
