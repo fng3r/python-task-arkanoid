@@ -1,5 +1,5 @@
-Запуск
+Launch.
 arkanoid.py
 
-Тесты
+Tests.
 tests\test_logic.py
